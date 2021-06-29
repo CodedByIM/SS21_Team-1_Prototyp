@@ -1,0 +1,23 @@
+{
+  "name": "ss21_team-1_prototyp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "serialport.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodedByIM/SS21_Team-1_Prototyp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CodedByIM/SS21_Team-1_Prototyp/issues"
+  },
+  "homepage": "https://github.com/CodedByIM/SS21_Team-1_Prototyp#readme",
+  "dependencies": {
+    "johnny-five": "^2.0.0",
+    "serialport": "^9.2.0"
+  }
+}

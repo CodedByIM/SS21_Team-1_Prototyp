@@ -25,6 +25,7 @@
 */
 
 #include <SparkFun_Bio_Sensor_Hub_Library.h>
+#include <ArduinoJson.h>
 #include <Wire.h>
 
 // Reset pin, MFIO pin
@@ -76,23 +77,40 @@ void setup(){
   // up. 
   Serial.println("Loading up the buffer with data....");
   delay(4000); 
-  
+
+
 }
+      
+
 
 void loop(){
+
+   
 
     // Information from the readBpm function will be saved to our "body"
     // variable.  
     body = bioHub.readBpm();
-    Serial.print("Heartrate: ");
+    /*Serial.print("Heartrate: ");
     Serial.println(body.heartRate); 
     Serial.print("Confidence: ");
     Serial.println(body.confidence); 
     Serial.print("Oxygen: ");
     Serial.println(body.oxygen); 
     Serial.print("Status: ");
-    Serial.println(body.status);
+    Serial.println(body.status);*/
     // Slow it down or your heart rate will go up trying to keep up
     // with the flow of numbers
-    delay(250); 
+    delay(250);
+    //char JSONMessage[] = " {\"Value\": body.heartRate}";
+    int heartRate = body.heartRate;
+    DynamicJsonBuffer heartBuffer;
+    JsonObject& root = heartBuffer.createObject();
+    root["Herzschlag"] = heartRate;
+    root.prettyPrintTo(Serial);
+    Serial.println();
+    
+
+
+    
+    
 }
