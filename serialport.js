@@ -28,7 +28,7 @@ parser.on("data",getData);
 
 function getData(data){ 
   date= new Date ();
-  let resultObject = { Uhrzeit: date, Herzschlag: data, Sauerstoff: "", Emotion: "" }; 
+  let resultObject = { Uhrzeit: date.toUTCString(), Herzschlag: data, Sauerstoff: "", Emotion: "" }; 
   results.push(resultObject);
   console.log(resultObject);
   counter= counter+1;
