@@ -1,3 +1,4 @@
+const fs = require('fs');
 
 var SerialPort = require('serialport');
 var readline = require('@serialport/parser-readline');
@@ -8,19 +9,31 @@ var Results = []
 var date;
 com.on("open",open);
 
+
+
 function open(){
   console.log("com is connected!!!");
-
 }
 
 var parser = com.pipe(new readline({delimiter:'\r\n'}));
 
 parser.on("data",getData);
 
-function getData(data){
+
+
+function getData(data){ 
   date= new Date ();
-  //console.log(data, date);
-  Results.push({Herzschlag: data, Uhrzeit: date});
+  Results.push({ Uhrzeit: date, Herzschlag: data, Sauerstoff: "", Emotion: "" });
   console.log(Results);
 
 }
+process.on('exit',
+function (){
+  const data = JSON.stringify(Results);
+  fs.writeFile('measurements.json', data, (err) => {
+    if (err) {
+        throw err;
+    }
+    console.log("JSON data is saved.");
+  });
+})
