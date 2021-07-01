@@ -16,8 +16,15 @@ document.getElementById("button").addEventListener("click", function(){
     document.getElementById("foto").src = fotos[index].source;
     console.log(fotos[index]);
     console.log(fotos);
+    console.log(Date.parse(fotos[index-1].starttime));
 })
 
+function labelData(){
+    for(let i = 0; i < fotos.length; i++){
+        //for(let j = 0; j < results.length; j++){
+
+        //}
+}
 /*
 for loop
 
@@ -29,6 +36,6 @@ resulsts[j]
 if results [j] < ...
 
 results[j].emotion = ...
-
+date.Pa
 "images/amusement/amusement_0487.jpg","images/amusement/amusement_0488.jpg","images/amusement/amusement_0489.jpg"
 */
