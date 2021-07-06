@@ -1,10 +1,15 @@
+const fs = require('fs');
+
 var fotos = [
     {source: "images/amusement/amusement_0487.jpg", starttime:"", endtime:"", emotion:"happy"},
     {source: "images/amusement/amusement_0488.jpg", starttime:"", endtime:"", emotion:"happy"},
     {source: "images/amusement/amusement_0489.jpg", starttime:"", endtime:"", emotion:"happy"},
 ];
+var config = fs.readFile("../data.json");
+var results = config.table;
 var index = 0;
 var date;
+
 date= new Date();
 fotos[index].starttime = date.toUTCString();
 
@@ -21,9 +26,12 @@ document.getElementById("button").addEventListener("click", function(){
 
 function labelData(){
     for(let i = 0; i < fotos.length; i++){
-        //for(let j = 0; j < results.length; j++){
-
-        //}
+        for(let j = 0; j < results.length; j++){
+            if(Date.parse(results[j].Uhrzeit) >= Date.parse(fotos[i].starttime) && Date.parse(results[j].Uhrzeit) <= Date.parse(fotos[i].endtime) ){
+                results[j].emotion = fotos[i].emotion;
+            }
+        }
+}
 }
 /*
 for loop

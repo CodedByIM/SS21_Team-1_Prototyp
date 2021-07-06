@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/CodedByIM/SS21_Team-1_Prototyp#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "johnny-five": "^2.0.0",
     "serialport": "^9.2.0"
   }
