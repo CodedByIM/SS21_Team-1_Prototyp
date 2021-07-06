@@ -25,6 +25,7 @@ var serial = SerialPort.serialPort;
 var com = new SerialPort("com3",{baudRate:115200});
 
 var results = {table: []};
+var fotos;
 var jsonResults;
 var counter = 0;
 
@@ -32,7 +33,10 @@ var date;
 com.on("open",open);
 
 
-
+if (typeof localStorage === "undefined" || localStorage === null) {
+  var LocalStorage = require('node-localstorage').LocalStorage;
+  localStorage = new LocalStorage('./scratch');
+}
 
 function open(){
   console.log("com is connected!!!");
@@ -52,10 +56,15 @@ function getData(data){
   console.log(resultObject);
   counter= counter+1;
 
-  if (counter== 15){
-    counter = 0;
+
+  if(localStorage.getItem('content') != null ){
+    let storage = localStorage.getItem('content');
+    fotos = JSON.parse(storage);
+    labeldata();
     jsonResults = JSON.stringify(results);
     
+    
+
     fs.writeFile("./data.json", jsonResults, 'utf8', function (err) {
       if (err) {
           return console.log(err);
@@ -65,15 +74,30 @@ function getData(data){
     });
 
   }
+  if (counter== 15){
+    counter = 0;
+    
+
+  }
 
 }
 
 function labelData(){
   for(let i = 0; i < fotos.length; i++){
       for(let j = 0; j < results.length; j++){
-          if(Date.parse(results[j].Uhrzeit) >= Date.parse(fotos[i].starttime) && Date.parse(results[j].Uhrzeit) <= Date.parse(fotos[i].endtime) ){
-              results[j].emotion = fotos[i].emotion;
+          if(Date.parse(results.table[j].Uhrzeit) >= Date.parse(fotos[i].starttime) && Date.parse(results[j].Uhrzeit) <= Date.parse(fotos[i].endtime) ){
+              results.table[j].emotion = fotos[i].emotion;
           }
       }
 }
 }
+
+
+/*
+if( localstorage){
+  fotos = JSON parse localstorage
+  labeldata();
+  json schreiben
+}
+
+*/
