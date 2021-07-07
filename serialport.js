@@ -6,6 +6,11 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 8080;
 
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+
 // sendFile will go here
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/Diashow/index.html'));

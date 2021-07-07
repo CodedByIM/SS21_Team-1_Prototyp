@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+
+    var fotos = [
+        {source: "./images/amusement/amusement_0487.jpg", starttime:"", endtime:"", emotion:"happy"},
+        {source: "./images/amusement/amusement_0488.jpg", starttime:"", endtime:"", emotion:"happy"},
+        {source: "./images/amusement/amusement_0489.jpg", starttime:"", endtime:"", emotion:"happy"},
+    ];
+    var index = 0;
+    var date;
+
+    date= new Date();
+    fotos[index].starttime = date.toUTCString();
+
+    function changeFoto(){
+        date= new Date;
+        index=index+1;
+        fotos[index-1].endtime = date.toUTCString();
+        fotos[index].starttime = date.toUTCString();
+        document.getElementById("foto").src = fotos[index].source;
+    }
+
+    function sendData(){
+        socket.emit('message', JSON.stringify(fotos));
+    }
+
+  </script>
+  <body>
+    <img src="./images/amusement/amusement_0487.jpg" alt="" id="foto" />
+    <button id="button" onclick="changeFoto()">Change</button>
+    <button id="button2" onclick="sendData()">Submit</button>
+  </body>
+</html>
