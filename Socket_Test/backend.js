@@ -12,6 +12,8 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + "/index.html");
 });
 
+app.use(express.static('images'));
+
 io.on('connection', (socket) => {
     console.log('a user connected');
     socket.on('disconnect', () => {
