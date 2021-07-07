@@ -103,6 +103,7 @@ void loop(){
     delay(250);
     //char JSONMessage[] = " {\"Value\": body.heartRate}";
     int heartRate = body.heartRate;
+    int oxygen = body.oxygen;
 
     /*
     DynamicJsonBuffer heartBuffer;
@@ -110,11 +111,16 @@ void loop(){
     root["Herzschlag"] = heartRate;
     root.prettyPrintTo(Serial);
     Serial.println();
+
+    H65
     */
 
     
-    
-    Serial.println(heartRate);
+    Serial.print("{\"herzschlag\": ");
+    Serial.print(heartRate);
+    Serial.print(", \"oxygen\": ");
+    Serial.print(oxygen);
+    Serial.println("}");
      
     
     

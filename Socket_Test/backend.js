@@ -47,11 +47,14 @@ parser.on("data",getData);
 var counter = 0;
 var results = [];
 var fotos;
+var parsedData;
 
 function getData(data){
     //converts sensor data to object 
     date= new Date ();
-    let resultObject = { Uhrzeit: date.toUTCString(), Herzschlag: data, Sauerstoff: "", Emotion: "" }; 
+    parsedData = JSON.parse(data);
+    //console.log(parsedData);
+    let resultObject = { Uhrzeit: date.toUTCString(), Herzschlag: parsedData.herzschlag, Sauerstoff: parsedData.oxygen, Emotion: "" }; 
     results.push(resultObject);
     console.log(resultObject);
     counter= counter+1;
@@ -65,7 +68,7 @@ function labelData(){
     for(let i = 0; i < fotos.length; i++){
         for(let j = 0; j < results.length; j++){
             if(Date.parse(results[j].Uhrzeit) >= Date.parse(fotos[i].starttime) && Date.parse(results[j].Uhrzeit) <= Date.parse(fotos[i].endtime) ){
-                results[j].emotion = fotos[i].emotion;
+                results[j].Emotion = fotos[i].emotion;
             }
         }
   }
