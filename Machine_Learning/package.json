@@ -5,7 +5,9 @@
   "main": "script.js",
   "dependencies": {
     "@tensorflow/tfjs": "^3.7.0",
-    "@tensorflow/tfjs-node": "^3.7.0"
+    "@tensorflow/tfjs-node": "^3.7.0",
+    "express": "^4.17.1",
+    "socket.io": "^4.1.2"
   },
   "devDependencies": {},
   "scripts": {
