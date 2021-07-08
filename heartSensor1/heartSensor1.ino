@@ -28,157 +28,57 @@
 #include <ArduinoJson.h>
 #include <Wire.h>
 
-// Reset pin, MFIO pin
 int resPin = 4;
 int mfioPin = 5;
 int MoPin = 3;
 
-const byte DATA_MAX_SIZE = 32;
-char data[DATA_MAX_SIZE];   // an array to store the received data
-
-// Takes address, reset pin, and MFIO pin.
 SparkFun_Bio_Sensor_Hub bioHub(resPin, mfioPin); 
-
 bioData body;  
-// ^^^^^^^^^
-// What's this!? This is a type (like int, byte, long) unique to the SparkFun
-// Pulse Oximeter and Heart Rate Monitor. Unlike those other types it holds
-// specific information on your heartrate and blood oxygen levels. BioData is
-// actually a specific kind of type, known as a "struct". 
-// You can choose another variable name other than "body", like "blood", or
-// "readings", but I chose "body". Using this "body" varible in the 
-// following way gives us access to the following data: 
-// body.heartrate  - Heartrate
-// body.confidence - Confidence in the heartrate value
-// body.oxygen     - Blood oxygen level
-// body.status     - Has a finger been sensed?
+
 
 
 void setup(){
 
   Serial.begin(115200);
-
-  pinMode( MoPin, OUTPUT );
-  
+  pinMode( MoPin, OUTPUT );  
   Wire.begin();
   int result = bioHub.begin();
-  //if (result == 0) // Zero errors!
-    //Serial.println("Sensor started!");
-  //else
-    //Serial.println("Could not communicate with the sensor!!!");
- 
-  //Serial.println("Configuring Sensor...."); 
-  int error = bioHub.configBpm(MODE_TWO); // Configuring just the BPM settings. 
-  if(error == 0){ // Zero errors!
-    //Serial.println("Sensor configured.");
-  }
-  else {
-    //Serial.println("Error configuring sensor.");
-    //Serial.print("Error: "); 
-    //Serial.println(error); 
-  }
-
-  // Data lags a bit behind the sensor, if you're finger is on the sensor when
-  // it's being configured this delay will give some time for the data to catch
-  // up. 
-  //Serial.println("Loading up the buffer with data....");
+  int error = bioHub.configBpm(MODE_TWO); 
   delay(4000); 
-
 
 }
       
 
 
 void loop(){
-    /*
-    digitalWrite(MoPin, HIGH);
-    delay(1000);
- 
-    digitalWrite(MoPin, LOW);
-    delay(1000);
-    */
-    // Information from the readBpm function will be saved to our "body"
-    // variable.  
+  
     body = bioHub.readBpm();
-    /*Serial.print("Heartrate: ");
-    Serial.println(body.heartRate); 
-    Serial.print("Confidence: ");
-    Serial.println(body.confidence); 
-    Serial.print("Oxygen: ");
-    Serial.println(body.oxygen); 
-    Serial.print("Status: ");
-    Serial.println(body.status);*/
-    // Slow it down or your heart rate will go up trying to keep up
-    // with the flow of numbers
     delay(250);
-    //char JSONMessage[] = " {\"Value\": body.heartRate}";
     int heartRate = body.heartRate;
-    int oxygen = body.oxygen;
-
-    /*
-    DynamicJsonBuffer heartBuffer;
-    JsonObject& root = heartBuffer.createObject();
-    root["Herzschlag"] = heartRate;
-    root.prettyPrintTo(Serial);
-    Serial.println();
-
-    H65
-    */
-
-    
+    int oxygen = body.oxygen; 
     Serial.print("{\"heartrate\": ");
     Serial.print(heartRate);
     Serial.print(", \"oxygen\": ");
     Serial.print(oxygen);
     Serial.println("}");
      
-    static char endMarker = '\n'; // message separator
-  char receivedChar;     // read char from serial port
-  int ndx = 0;          // current index of data buffer
-  // clean data buffer
-  memset(data, 32, sizeof(data));
-  // read while we have data available and we are
-  // still receiving the same message.
+  static char endMarker = '\n'; 
+  char receivedChar;     
   while(Serial.available() > 0) {
     receivedChar = Serial.read();
     if (receivedChar == endMarker) {
-      data[ndx] = '\0'; // end current message
       digitalWrite(MoPin, HIGH);
       delay(1000);
- 
       digitalWrite(MoPin, LOW);
       delay(1000);
-      return;
-      
-    }
-    // looks like a valid message char, so append it and
-    // increment our index
-    data[ndx] = receivedChar;
-    ndx++;
-    // if the message is larger than our max size then
-    // stop receiving and clear the data buffer. this will
-    // most likely cause the next part of the message
-    // to be truncated as well, but hopefully when you
-    // parse the message, you'll be able to tell that it's
-    // not a valid message.
-    if (ndx >= DATA_MAX_SIZE) {
-      break;
-    }
-  }
-  // no more available bytes to read from serial and we
-  // did not receive the separato. it's an incomplete message!
-  //Serial.println("error: incomplete message");
-  //Serial.println(data);
-  
-  memset(data, 32, sizeof(data));
-  
+      return;      
+    }   
+  }  
 }
 
 void receiveData() {
   digitalWrite(MoPin, HIGH);
       delay(1000);
- 
       digitalWrite(MoPin, LOW);
-      delay(1000);
-  
+      delay(1000); 
 }
