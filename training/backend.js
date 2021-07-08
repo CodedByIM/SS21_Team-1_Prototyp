@@ -48,7 +48,15 @@ function open(){
 var parser = com.pipe(new readline({delimiter:'\r\n'}));
 parser.on("data",getData);
 
+/**
+ * array for the data
+ * time, heartrate, oxygen, emotion
+ */
 var results = [];
+/**
+ * array of the information about the fotos
+ * source, starttime, endtime, emotion
+ */
 var fotos;
 var parsedData;
 
