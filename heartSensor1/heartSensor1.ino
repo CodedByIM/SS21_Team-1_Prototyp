@@ -116,7 +116,7 @@ void loop(){
     */
 
     
-    Serial.print("{\"herzschlag\": ");
+    Serial.print("{\"heartrate\": ");
     Serial.print(heartRate);
     Serial.print(", \"oxygen\": ");
     Serial.print(oxygen);

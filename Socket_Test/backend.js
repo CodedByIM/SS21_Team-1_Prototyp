@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
         console.log('message: '+msg);
         fotos= JSON.parse(msg);
         labelData();
+        writeJson();
     });
 });
 
@@ -50,25 +51,23 @@ var fotos;
 var parsedData;
 
 function getData(data){
-    //converts sensor data to object 
     date= new Date ();
     parsedData = JSON.parse(data);
-    //console.log(parsedData);
-    let resultObject = { Uhrzeit: date.toUTCString(), Herzschlag: parsedData.herzschlag, Sauerstoff: parsedData.oxygen, Emotion: "" }; 
+    let resultObject = { time: date.toUTCString(), heartrate: parsedData.heartrate, oxygen: parsedData.oxygen, emotion: "" }; 
     results.push(resultObject);
     console.log(resultObject);
     counter= counter+1;
     //saves as JSON
-    if (counter== 15){
-        counter = 0;
-        writeJson();    
-    }
+    // if (counter== 15){
+    //     counter = 0;
+    //     writeJson();    
+    // }
 }
 function labelData(){
     for(let i = 0; i < fotos.length; i++){
         for(let j = 0; j < results.length; j++){
-            if(Date.parse(results[j].Uhrzeit) >= Date.parse(fotos[i].starttime) && Date.parse(results[j].Uhrzeit) <= Date.parse(fotos[i].endtime) ){
-                results[j].Emotion = fotos[i].emotion;
+            if(Date.parse(results[j].time) >= Date.parse(fotos[i].starttime) && Date.parse(results[j].time) <= Date.parse(fotos[i].endtime) ){
+                results[j].emotion = fotos[i].emotion;
             }
         }
   }
