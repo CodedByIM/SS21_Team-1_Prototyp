@@ -21,11 +21,12 @@
     socket.on('message', function(msg) {
         heartrate = msg.heartrate;
         oxygen = msg.oxygen;
+        console.log(heartrate, oxygen);
+        myFirstTfjs();
     });
 
         async function myFirstTfjs() {
         const model = await tf.loadLayersModel('/my-model.json');
-        console.log("Model loaded!");
 
         const testVal = tf.tensor2d([heartrate, oxygen], [1, 2]);
 
@@ -40,7 +41,7 @@
     
     }
 
-    myFirstTfjs();
+    
 
     </script>
 </body>
