@@ -38,6 +38,9 @@ var com = new SerialPort("com3",{baudRate:115200});
 
 com.on("open",open);
 
+/**
+ * executes when the serialport is opened
+ */
 function open(){
     console.log("com is connected!!!");    
 }
@@ -45,24 +48,25 @@ function open(){
 var parser = com.pipe(new readline({delimiter:'\r\n'}));
 parser.on("data",getData);
 
-var counter = 0;
 var results = [];
 var fotos;
 var parsedData;
 
+/**
+ * handles incoming data
+ * @param {*} data 
+ */
 function getData(data){
     date= new Date ();
     parsedData = JSON.parse(data);
     let resultObject = { time: date.toUTCString(), heartrate: parsedData.heartrate, oxygen: parsedData.oxygen, emotion: "" }; 
     results.push(resultObject);
     console.log(resultObject);
-    counter= counter+1;
-    //saves as JSON
-    // if (counter== 15){
-    //     counter = 0;
-    //     writeJson();    
-    // }
 }
+
+/**
+ * labels the sensor data with the emotions from the foto
+ */
 function labelData(){
     for(let i = 0; i < fotos.length; i++){
         for(let j = 0; j < results.length; j++){
@@ -72,12 +76,15 @@ function labelData(){
         }
   }
 }
+
+/**
+ * saves the array of results as a json file
+ */
 function writeJson(){
     fs.writeFile("./data.json", JSON.stringify(results), 'utf8', function (err) {
         if (err) {
             return console.log(err);
-        }
-    
+        }    
         console.log(results.length, "values are saved");
     });
 }
