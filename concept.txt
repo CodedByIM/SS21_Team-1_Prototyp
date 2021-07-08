@@ -1,6 +1,0 @@
-Wie werden die Daten abgeglichen?
-
-1. Daten werden aus Serialport werden aufgezichnet und Sensordaten mit Zeitstempel versehen. 
-2. Bilder (Emotionen) werden auf HTML Seite angezeigt. Während dem Anzeigen der Bilder wird ebenfalls die Zeit aufgezeichnet.
-3. Zeitstempel aus Serialport und Anzeige der Bilder wird abgeglichen.
-4. Gleiche Zeitstempel werden zusammengeführt.
