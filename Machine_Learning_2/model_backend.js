@@ -17,6 +17,14 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('user disconnected');
     });
+    socket.on('change', (msg) => {
+        com.write('vibrate\n', (err) => {
+            if (err) {
+              return console.log('Error on write: ', err.message);
+            }
+            console.log('message written');
+          });
+    });
 });
 
 server.listen(8080, () => {

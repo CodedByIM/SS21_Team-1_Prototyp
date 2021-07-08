@@ -18,6 +18,7 @@
     var socket = io();
     var heartrate;
     var oxygen;
+    var emotion = "empty";
     socket.on('message', function(msg) {
         heartrate = msg.heartrate;
         oxygen = msg.oxygen;
@@ -38,6 +39,13 @@
         const classNames = ["happy", "afraid"];
         console.log(classNames[pIndex]);
         document.getElementById("emotion").innerHTML = classNames[pIndex];
+
+        
+        if (classNames[pIndex] != emotion) {
+            emotion = classNames[pIndex];
+            console.log("---- Emotion changed to: ", emotion);
+            socket.emit('change', "emotion");
+        }
     
     }
 
