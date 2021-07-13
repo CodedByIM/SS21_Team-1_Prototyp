@@ -25,7 +25,6 @@
 */
 
 #include <SparkFun_Bio_Sensor_Hub_Library.h>
-#include <ArduinoJson.h>
 #include <Wire.h>
 
 int resPin = 4;
@@ -74,11 +73,4 @@ void loop(){
       return;      
     }   
   }  
-}
-
-void receiveData() {
-  digitalWrite(MoPin, HIGH);
-      delay(1000);
-      digitalWrite(MoPin, LOW);
-      delay(1000); 
 }
