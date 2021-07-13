@@ -47,10 +47,10 @@
             console.log("---- Emotion changed to: ", emotion);
             socket.emit('change', "emotion");
             if(emotion=="happy"){
-                document.getElementById("foto").src = "/images/schocko.png";
+                document.getElementById("foto").src = "/images/schocko.svg";
             }
             else{
-                document.getElementById("foto").src = "/images/kaffee.jpg";
+                document.getElementById("foto").src = "/images/kaffee.svg";
             }
         }
     
