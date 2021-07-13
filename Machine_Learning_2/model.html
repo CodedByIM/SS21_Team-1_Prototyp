@@ -14,6 +14,7 @@
 <body>
     <h1>You are:</h1>
     <h1 id="emotion"></h1>
+    <img src="" alt="" id="foto" />
     <script>
     var socket = io();
     var heartrate;
@@ -45,6 +46,12 @@
             emotion = classNames[pIndex];
             console.log("---- Emotion changed to: ", emotion);
             socket.emit('change', "emotion");
+            if(emotion=="happy"){
+                document.getElementById("foto").src = "/images/schocko.png";
+            }
+            else{
+                document.getElementById("foto").src = "/images/kaffee.jpg";
+            }
         }
     
     }
