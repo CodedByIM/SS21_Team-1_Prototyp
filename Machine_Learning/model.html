@@ -1,63 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
-    
+    <link rel="stylesheet" href="./Model/Styles/styles.css" />
+    <link rel="stylesheet" href="https://use.typekit.net/hcz5nwc.css" />
+    <link rel="stylesheet" href="./Model/fonts/Lemon Milk Pro Medium.otf" />
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+  <body>
+    <div id="element-oben">
+      <img
+        src="./Model/images/element_rechts_oben_Zeichenfläche 1.svg"
+        alt="element_rechts_oben"
+      />
+    </div>
 
-    <!-- <link rel="stylesheet" href="./Styles/styles.css"> -->
-</head>
-<script src="/socket.io/socket.io.js"></script>
-<body>
-    <h1>You are:</h1>
-    <h1 id="emotion"></h1>
-    <img src="" alt="" id="foto" />
+    <div id="element-unten">
+      <img
+        src="./Model/images/element_links_unten_Zeichenfläche 1.svg"
+        alt="element_rechts_unte"
+      />
+    </div>
+
+    <div id="inhalt">
+      <img id="logo" src="./Model/images/Logo_blau-01.svg" alt="logo" />
+      <div>
+        <h1 id="beschreibung">You are:</h1>
+      <h1 id="emotion"></h1>
+      <img src="" alt="" id="foto" />
+      </div>
+      
+    </div>
+
     <script>
-    var socket = io();
-    var heartrate;
-    var oxygen;
-    var emotion = "empty";
-    socket.on('message', function(msg) {
+      var socket = io();
+      var heartrate;
+      var oxygen;
+      var emotion = "empty";
+      socket.on("message", function (msg) {
         heartrate = msg.heartrate;
         oxygen = msg.oxygen;
         console.log(heartrate, oxygen);
         myFirstTfjs();
-    });
+      });
 
-        async function myFirstTfjs() {
-        const model = await tf.loadLayersModel('/my-model.json');
+      async function myFirstTfjs() {
+        const model = await tf.loadLayersModel("/my-model.json");
 
         const testVal = tf.tensor2d([heartrate, oxygen], [1, 2]);
 
         model.predict(testVal);
 
         const prediction = model.predict(testVal);
-        const pIndex = tf.argMax(prediction, axis=1).dataSync();
+        const pIndex = tf.argMax(prediction, (axis = 1)).dataSync();
 
         const classNames = ["happy", "afraid"];
         console.log(classNames[pIndex]);
         document.getElementById("emotion").innerHTML = classNames[pIndex];
 
-        
         if (classNames[pIndex] != emotion) {
-            emotion = classNames[pIndex];
-            console.log("---- Emotion changed to: ", emotion);
-            socket.emit('change', "emotion");
-            if(emotion=="happy"){
-                document.getElementById("foto").src = "/images/schocko.svg";
-            }
-            else{
-                document.getElementById("foto").src = "/images/kaffee.svg";
-            }
+          emotion = classNames[pIndex];
+          console.log("---- Emotion changed to: ", emotion);
+          socket.emit("change", "emotion");
+          if (emotion == "happy") {
+            document.getElementById("foto").src = "/images/schocko.svg";
+          } else {
+            document.getElementById("foto").src = "/images/kaffee.svg";
+          }
         }
-    
-    }
-
-    
-
+      }
     </script>
-</body>
+  </body>
 </html>
