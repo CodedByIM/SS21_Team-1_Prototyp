@@ -10,7 +10,7 @@ async function load_data(){
     });
     
 const numOfFeatures = (await trainingData.columnNames()).length - 1;
-const numOfSamples = 293;
+const numOfSamples = 1353;
 const convertedData =
       trainingData.map(({xs, ys}) => {
               const labels = [
@@ -24,7 +24,7 @@ const model = tf.sequential();
 model.add(tf.layers.dense({inputShape: [numOfFeatures], activation: "sigmoid", units: 5}))
 model.add(tf.layers.dense({activation: "softmax", units: 2}));
     
-model.compile({loss: "categoricalCrossentropy", optimizer: tf.train.adam(0.0001)});
+model.compile({loss: "categoricalCrossentropy", optimizer: tf.train.adam(0.0007)});
     
 await model.fitDataset(convertedData, 
                      {epochs:100,
@@ -52,6 +52,9 @@ const classNames = ["happy", "afraid"];
     
 // alert(prediction)
 alert(classNames[pIndex])
+
+const surface = { name: 'Confusion Matrix', tab: 'Charts' };
+tfvis.render.confusionMatrix(surface, classNames[pIndex]);
     
 }
 load_data();
